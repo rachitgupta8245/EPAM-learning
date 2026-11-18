@@ -1,0 +1,1674 @@
+# Topic 03 – Prompt Evaluation
+
+> **Syllabus:** Judge prompt quality with tests, not opinions.  
+> **Learning Goal:** Learn how to systematically test, measure, compare, and improve prompts used with AI models.
+
+---
+
+## Table of Contents
+
+1. Introduction to Prompt Evaluation
+2. What Is a Prompt?
+3. Why Is Prompt Evaluation Important?
+4. Prompt Evaluation vs Model Evaluation
+5. Components of Prompt Evaluation
+6. Prompt Evaluation Workflow
+7. Important Evaluation Criteria
+8. Types of Prompt Evaluation
+9. Evaluation Metrics
+10. Test Cases and Evaluation Datasets
+11. Manual Evaluation
+12. Automated Evaluation
+13. LLM-as-a-Judge
+14. A/B Testing of Prompts
+15. Prompt Robustness Testing
+16. Common Prompt Failures
+17. Practical Python Implementation
+18. Real-World Case Study
+19. Best Practices
+20. Advantages and Limitations
+21. Interview and Viva Questions
+22. Practice Exercises
+23. Quick Revision Notes
+
+---
+
+# 1. Introduction to Prompt Evaluation
+
+### What is Prompt Evaluation?
+
+**Prompt Evaluation is the systematic process of testing and measuring the quality of prompts to determine whether they generate accurate, relevant, consistent, and useful responses from an AI model.**
+
+A prompt is an instruction or input given to an AI model. The quality of that prompt directly affects the quality of the generated response.
+
+Prompt evaluation helps us determine whether a prompt successfully achieves its intended objective.
+
+### Example
+
+Suppose we want an AI model to generate a professional email.
+
+**Prompt 1:**
+
+```text
+Write an email.
+```
+
+**Prompt 2:**
+
+```text
+Write a professional email to a college professor
+requesting a two-day extension for an assignment.
+
+Keep the tone polite, use simple language,
+and limit the email to 120 words.
+```
+
+Prompt 2 gives more specific instructions. It is more likely to generate the desired output.
+
+However, we should not automatically assume that Prompt 2 is better. We must test both prompts on multiple examples and compare their results.
+
+### Main Idea
+
+Prompt evaluation answers questions such as:
+
+- Does the prompt generate the correct answer?
+- Does it follow all the given instructions?
+- Is the output relevant to the user's question?
+- Does it produce consistent results?
+- Does it avoid unnecessary or misleading information?
+- Does it work with different types of inputs?
+
+**Remember:** A good-looking response is not necessarily a good response. Evaluation requires evidence.
+
+---
+
+# 2. What Is a Prompt?
+
+A prompt is the text, instruction, question, or context provided to an AI model to guide its response.
+
+### Example
+
+```text
+You are a helpful programming tutor.
+
+Explain the concept of inheritance in Java.
+Use a simple example and explain it in beginner-friendly language.
+```
+
+Here:
+
+- Role: Helpful programming tutor
+- Task: Explain inheritance
+- Subject: Java
+- Style: Beginner-friendly
+- Requirement: Include an example
+
+### Types of Prompts
+
+**1. Zero-Shot Prompting**
+
+The model is asked to perform a task without receiving examples.
+
+```text
+Classify the following review as Positive or Negative:
+
+"The product is excellent."
+```
+
+**2. One-Shot Prompting**
+
+The model receives one example before performing the task.
+
+```text
+Example:
+Review: "I love this product."
+Sentiment: Positive
+
+Now classify:
+Review: "The product is terrible."
+```
+
+**3. Few-Shot Prompting**
+
+The model receives multiple examples to understand the expected pattern.
+
+```text
+Review: "Amazing experience."
+Sentiment: Positive
+
+Review: "Very disappointing."
+Sentiment: Negative
+
+Review: "I really enjoyed it."
+Sentiment:
+```
+
+**4. Role-Based Prompting**
+
+The model is assigned a particular role.
+
+```text
+Act as an experienced mathematics teacher.
+Explain quadratic equations with examples.
+```
+
+**5. Structured Output Prompting**
+
+The model is instructed to return output in a specific format.
+
+```text
+Extract the following information from the text.
+
+Return:
+- Name
+- Age
+- City
+
+Use JSON format only.
+```
+
+**6. Chain-of-Thought or Step-Based Prompting**
+
+The model is asked to solve a problem in a structured manner. In applications, this may be expressed as a request for a concise explanation or a sequence of solution steps.
+
+```text
+Solve the following mathematical problem.
+Show the key steps and provide the final answer.
+```
+
+---
+
+# 3. Why Is Prompt Evaluation Important?
+
+Prompt evaluation is important because AI models can generate different outputs for the same or similar prompts.
+
+A prompt that works well for one input may fail for another input.
+
+### Major Reasons
+
+**1. Accuracy**
+
+Evaluation checks whether the generated information is factually correct.
+
+**2. Relevance**
+
+It ensures that the response is related to the user's actual question.
+
+**3. Consistency**
+
+It checks whether the prompt produces reasonably consistent results across multiple test cases.
+
+**4. Instruction Following**
+
+It verifies whether the AI model follows the specified instructions, format, tone, and constraints.
+
+**5. Cost Optimization**
+
+Poor prompts may generate unnecessarily long responses, increasing token usage and API costs.
+
+**6. Time Efficiency**
+
+Evaluating prompts helps identify ineffective instructions and reduces repeated manual corrections.
+
+**7. Reliability**
+
+It ensures that prompts work properly in real-world applications.
+
+### Example
+
+Suppose a company uses AI to answer customer queries.
+
+If its prompt sometimes gives incorrect refund policies, the company may lose customer trust.
+
+By evaluating the prompt with different refund-related questions, the company can identify failures and improve the instructions before deployment.
+
+---
+
+# 4. Prompt Evaluation vs Model Evaluation
+
+These two concepts are related but different.
+
+| Basis | Prompt Evaluation | Model Evaluation |
+|---|---|---|
+| Meaning | Evaluates the quality of a prompt | Evaluates the performance of an AI model |
+| Focus | Instructions and input design | Model capabilities and performance |
+| Objective | Find the most effective prompt | Find how well a model performs |
+| Changes | Prompt is modified | Model, training, or configuration may be changed |
+| Example | Comparing two prompts for summarization | Comparing two language models |
+
+### Example
+
+Suppose we use the same AI model with two prompts.
+
+- Prompt A: Explain machine learning.
+- Prompt B: Explain machine learning in 100 words with one practical example.
+
+If Prompt B gives more useful results for our intended task, it may be a better prompt.
+
+The model remains the same. Only the prompt changes.
+
+---
+
+# 5. Components of Prompt Evaluation
+
+Prompt evaluation generally involves the following components:
+
+### 1. Prompt
+
+The instruction given to the AI model.
+
+### 2. Input Dataset
+
+A collection of questions or inputs used to test the prompt.
+
+### 3. Expected Output
+
+The desired answer or the characteristics of an acceptable answer.
+
+### 4. Generated Output
+
+The actual response produced by the AI model.
+
+### 5. Evaluation Criteria
+
+The standards used to judge the generated output.
+
+### 6. Evaluation Metrics
+
+Numerical measures used to compare performance.
+
+### 7. Feedback and Improvement
+
+The process of modifying the prompt based on evaluation results.
+
+### Diagram: Components of Prompt Evaluation
+
+```text
+       Evaluation Dataset
+               |
+               v
+             Prompt
+               |
+               v
+          AI Model
+               |
+               v
+         Generated Output
+               |
+               v
+      Compare with Expected
+               |
+               v
+       Evaluation Criteria
+               |
+               v
+       Evaluation Metrics
+               |
+               v
+       Feedback and Analysis
+               |
+               v
+         Improve Prompt
+               |
+               +------> Test Again
+```
+
+---
+
+# 6. Prompt Evaluation Workflow
+
+A systematic evaluation workflow makes prompt testing more reliable.
+
+### Step 1: Define the Objective
+
+Clearly identify what the prompt should achieve.
+
+Example: Generate accurate and polite responses to customer complaints.
+
+### Step 2: Create the Prompt
+
+Write the initial prompt with clear instructions.
+
+```text
+You are a customer support assistant.
+Respond politely to customer complaints.
+Provide a helpful solution.
+```
+
+### Step 3: Prepare Test Cases
+
+Create different inputs that represent real situations.
+
+Examples:
+
+- Customer asking for a refund.
+- Customer reporting a damaged product.
+- Customer asking about delivery.
+- Customer expressing dissatisfaction.
+
+### Step 4: Run the Prompt
+
+Provide the test cases to the AI model and collect the generated outputs.
+
+### Step 5: Evaluate the Outputs
+
+Check the responses for:
+
+- Accuracy
+- Relevance
+- Completeness
+- Clarity
+- Instruction following
+- Consistency
+
+### Step 6: Record the Results
+
+Store the output and evaluation scores for comparison.
+
+### Step 7: Improve the Prompt
+
+Identify weaknesses and modify the prompt.
+
+### Step 8: Test Again
+
+Run the same test cases on the improved prompt and compare the results.
+
+### Flowchart
+
+```text
+      Define Objective
+             |
+             v
+       Create Prompt
+             |
+             v
+      Prepare Test Data
+             |
+             v
+        Run AI Model
+             |
+             v
+       Evaluate Output
+             |
+             v
+       Record Results
+             |
+             v
+      Is Performance Good?
+          /       \
+        Yes        No
+         |          |
+         v          v
+      Finalize   Improve Prompt
+                    |
+                    v
+                 Test Again
+```
+
+---
+
+# 7. Important Evaluation Criteria
+
+Evaluation criteria are the standards used to determine whether an AI-generated response is good or bad.
+
+### 1. Accuracy
+
+Accuracy measures whether the information provided by the AI is correct.
+
+Example:
+
+Question: What is the capital of India?
+
+Expected Answer: New Delhi
+
+Generated Answer: Mumbai
+
+The response is inaccurate.
+
+### 2. Relevance
+
+Relevance measures whether the response is related to the given question.
+
+Example:
+
+Question: Explain Python.
+
+Relevant response: Python is a high-level programming language.
+
+Irrelevant response: Java is an object-oriented programming language.
+
+### 3. Completeness
+
+Completeness checks whether the response covers all required points.
+
+Example:
+
+Prompt: Explain three advantages of cloud computing.
+
+If the model provides only one advantage, the response is incomplete.
+
+### 4. Clarity
+
+Clarity measures whether the response is easy to understand.
+
+A good response should use understandable language, proper structure, and logical explanations.
+
+### 5. Consistency
+
+Consistency checks whether similar inputs produce logically similar and reliable outputs.
+
+Example:
+
+If a prompt classifies positive reviews, similar positive reviews should generally receive the same classification.
+
+### 6. Instruction Following
+
+It checks whether the model follows all the instructions provided in the prompt.
+
+Example:
+
+Prompt: Explain artificial intelligence in exactly 50 words.
+
+If the model generates 150 words, it has failed to follow the length constraint.
+
+### 7. Robustness
+
+Robustness measures whether a prompt continues to work when inputs change slightly.
+
+Example:
+
+A sentiment-analysis prompt should work with:
+
+- "This product is amazing."
+- "AMAZING product!!!"
+- "I really liked this product."
+
+### 8. Safety
+
+Safety checks whether the model avoids harmful, inappropriate, or unsafe responses.
+
+### 9. Formatting
+
+Formatting checks whether the response follows the requested structure.
+
+Example:
+
+If the prompt asks for JSON but the model returns a normal paragraph, the formatting requirement has failed.
+
+---
+
+# 8. Types of Prompt Evaluation
+
+There are three commonly used approaches.
+
+## A. Manual Evaluation
+
+Manual evaluation involves a human reviewing the AI-generated responses and judging their quality.
+
+A human evaluator compares the generated output against the expected result or evaluation criteria.
+
+**Example:**
+
+A teacher provides 20 questions to an AI tutor and manually checks whether the answers are correct and understandable.
+
+**Advantages:**
+
+- Human judgment can understand context.
+- Suitable for subjective tasks.
+- Can identify subtle errors.
+- Useful for evaluating tone and clarity.
+
+**Disadvantages:**
+
+- Time-consuming.
+- Expensive for large datasets.
+- Different evaluators may give different scores.
+- Difficult to scale.
+
+## B. Automated Evaluation
+
+Automated evaluation uses software, predefined rules, or mathematical metrics to measure output quality.
+
+**Example:**
+
+A program checks whether an AI model returns the correct classification label.
+
+Expected Output: Positive
+
+Generated Output: Positive
+
+Result: Pass
+
+**Advantages:**
+
+- Fast evaluation.
+- Can test large datasets.
+- Repeatable and consistent.
+- Reduces manual effort.
+
+**Disadvantages:**
+
+- Difficult to judge subjective answers.
+- Exact-match checks may reject valid alternative answers.
+- Quality depends on the evaluation rules.
+
+## C. LLM-as-a-Judge
+
+LLM-as-a-Judge is an evaluation technique in which one language model evaluates the output generated by another model.
+
+It uses a separate evaluation prompt containing scoring criteria.
+
+**Example:**
+
+An AI model generates an explanation of machine learning.
+
+Another AI model evaluates the explanation based on:
+
+- Accuracy
+- Relevance
+- Completeness
+- Clarity
+
+It then provides a score and feedback.
+
+### Example Judge Prompt
+
+```text
+You are an expert evaluator.
+
+Evaluate the following AI-generated response.
+
+Question:
+Explain machine learning.
+
+Generated Answer:
+Machine learning is a branch of AI that allows
+computers to learn patterns from data.
+
+Evaluate using these criteria:
+1. Accuracy
+2. Relevance
+3. Completeness
+4. Clarity
+
+Give each criterion a score from 1 to 5.
+
+Also provide a short explanation for each score.
+```
+
+**Advantages:**
+
+- Can evaluate complex written responses.
+- Faster than manually checking every output.
+- Useful for large-scale evaluation.
+- Can provide explanations for scores.
+
+**Disadvantages:**
+
+- The judge model can also make mistakes.
+- It may show bias toward certain writing styles.
+- It may prefer longer answers unnecessarily.
+- Its evaluation can vary between runs.
+
+**Important:** LLM-as-a-Judge should be validated against human judgments, especially for important applications.
+
+---
+
+# 9. Evaluation Metrics
+
+Evaluation metrics are numerical measures used to determine how well a prompt performs.
+
+The correct metric depends on the task.
+
+## A. Accuracy
+
+Accuracy measures the proportion of correct predictions out of all predictions.
+
+Formula:
+
+Accuracy = Correct Predictions / Total Predictions
+
+Example:
+
+An AI model classifies 100 customer reviews.
+
+- Correct classifications = 90
+- Total classifications = 100
+
+Accuracy = 90 / 100 = 0.90 = 90%
+
+## B. Precision
+
+Precision measures how many predicted positive results are actually positive.
+
+Formula:
+
+Precision = TP / (TP + FP)
+
+Where:
+
+- TP = True Positive
+- FP = False Positive
+
+Example:
+
+The model predicts that 20 reviews are positive.
+
+Out of these, 16 are actually positive.
+
+Precision = 16 / 20 = 0.80 = 80%
+
+## C. Recall
+
+Recall measures how many actual positive cases are correctly identified.
+
+Formula:
+
+Recall = TP / (TP + FN)
+
+Where:
+
+- TP = True Positive
+- FN = False Negative
+
+Example:
+
+There are 25 actually positive reviews.
+
+The model correctly identifies 20.
+
+Recall = 20 / 25 = 0.80 = 80%
+
+## D. F1-Score
+
+F1-score is the harmonic mean of precision and recall.
+
+It is useful when both precision and recall are important.
+
+Formula:
+
+F1 = 2 × (Precision × Recall) / (Precision + Recall)
+
+Example:
+
+Precision = 0.80
+
+Recall = 0.80
+
+F1 = 2 × (0.80 × 0.80) / (0.80 + 0.80)
+
+F1 = 0.80 = 80%
+
+## E. Exact Match
+
+Exact Match checks whether the generated answer is exactly the same as the expected answer according to a defined comparison rule.
+
+Example:
+
+Expected: New Delhi
+
+Generated: New Delhi
+
+Result: Match
+
+Expected: New Delhi
+
+Generated: Delhi
+
+Result: No exact match
+
+Although the second answer may be acceptable in context, a strict exact-match metric may mark it incorrect.
+
+## F. BLEU Score
+
+BLEU stands for Bilingual Evaluation Understudy.
+
+It is a metric originally developed for evaluating machine-generated translations.
+
+It compares the words or word sequences in generated text with reference text using n-gram overlap and a brevity penalty.
+
+A higher BLEU score generally indicates greater overlap with the reference text.
+
+**Limitation:** A sentence may be correct but use different words, resulting in a lower BLEU score.
+
+## G. ROUGE Score
+
+ROUGE stands for Recall-Oriented Understudy for Gisting Evaluation.
+
+It is commonly used to evaluate text summarization.
+
+It measures the overlap between generated text and reference text.
+
+Common variants include:
+
+- ROUGE-1: Unigram overlap.
+- ROUGE-2: Bigram overlap.
+- ROUGE-L: Longest common subsequence.
+
+## H. Semantic Similarity
+
+Semantic similarity measures how closely two pieces of text match in meaning rather than exact wording.
+
+It is commonly calculated using text embeddings and similarity measures such as cosine similarity.
+
+Example:
+
+Expected: "The weather is pleasant."
+
+Generated: "The climate is nice."
+
+The wording differs, but the meanings are similar.
+
+### Comparison of Metrics
+
+| Metric | Main Purpose |
+|---|---|
+| Accuracy | Overall classification correctness |
+| Precision | Correctness of positive predictions |
+| Recall | Identification of actual positive cases |
+| F1-Score | Balance between precision and recall |
+| Exact Match | Exact answer matching |
+| BLEU | Text and translation overlap |
+| ROUGE | Summary overlap |
+| Semantic Similarity | Meaning similarity |
+
+**Important:** Accuracy, precision, recall, and F1 are particularly useful for classification tasks. BLEU and ROUGE are useful for certain text-generation tasks. No single metric can measure every aspect of prompt quality.
+
+---
+
+# 10. Test Cases and Evaluation Datasets
+
+A test case is an individual input used to check whether a prompt produces the expected output.
+
+An evaluation dataset is a collection of test cases used to measure prompt performance.
+
+### Example: Sentiment Classification
+
+| Test Case | Input | Expected Output |
+|---|---|---|
+| 1 | This product is amazing | Positive |
+| 2 | I hate this product | Negative |
+| 3 | The product is okay | Neutral |
+| 4 | Excellent quality | Positive |
+| 5 | Very poor experience | Negative |
+
+### Characteristics of Good Test Cases
+
+1. **Relevant:** They should represent real-world tasks.
+2. **Diverse:** They should cover different types of inputs.
+3. **Clear:** Expected outcomes should be defined wherever possible.
+4. **Balanced:** Important categories should be represented appropriately.
+5. **Representative:** They should reflect the actual users and situations.
+6. **Challenging:** They should include edge cases and unusual inputs.
+
+### Types of Test Cases
+
+**1. Normal Cases**
+
+Common inputs that the model is expected to handle.
+
+**2. Edge Cases**
+
+Unusual inputs that test the limits of the prompt.
+
+Example: An empty customer review.
+
+**3. Ambiguous Cases**
+
+Inputs that can have multiple interpretations.
+
+Example: "The product is sick."
+
+Depending on context, "sick" may be positive or negative.
+
+**4. Invalid Inputs**
+
+Inputs that do not follow the expected format.
+
+Example: A number instead of a customer review.
+
+**5. Adversarial Inputs**
+
+Inputs deliberately designed to confuse or manipulate the system.
+
+Example: A user attempts to make the AI ignore its original instructions.
+
+---
+
+# 11. Manual Evaluation in Detail
+
+Manual evaluation is useful when output quality cannot be measured easily using simple mathematical formulas.
+
+### Human Evaluation Process
+
+1. Select a group of test inputs.
+2. Run the prompt on the AI model.
+3. Collect the generated responses.
+4. Provide responses to human evaluators.
+5. Ask evaluators to score each response.
+6. Calculate average scores.
+7. Identify common weaknesses.
+
+### Example: Rating Scale
+
+| Score | Meaning |
+|---|---|
+| 1 | Very Poor |
+| 2 | Poor |
+| 3 | Average |
+| 4 | Good |
+| 5 | Excellent |
+
+Suppose an AI-generated answer receives the following scores:
+
+- Accuracy: 5
+- Relevance: 4
+- Clarity: 4
+- Completeness: 3
+
+Average Score:
+
+\[
+\frac{5+4+4+3}{4}=4
+\]
+
+The response receives an average score of 4 out of 5.
+
+### Important Consideration
+
+For subjective tasks, it is better to use multiple evaluators and clear scoring guidelines rather than relying on only one person's opinion.
+
+---
+
+# 12. Automated Evaluation in Detail
+
+Automated evaluation uses code or software to test generated responses.
+
+It is especially useful when the output has a predefined format or expected answer.
+
+### Example
+
+Suppose we want an AI model to classify customer feedback as:
+
+- Positive
+- Negative
+- Neutral
+
+We can automatically compare the predicted labels with the expected labels.
+
+```python
+expected = [
+    "Positive",
+    "Negative",
+    "Neutral",
+    "Positive"
+]
+
+predicted = [
+    "Positive",
+    "Negative",
+    "Positive",
+    "Positive"
+]
+
+correct = 0
+
+for i in range(len(expected)):
+    if expected[i] == predicted[i]:
+        correct += 1
+
+accuracy = correct / len(expected)
+
+print("Accuracy:", accuracy * 100, "%")
+```
+
+Output:
+
+```text
+Accuracy: 75.0 %
+```
+
+The prompt correctly classified 3 out of 4 examples.
+
+### Advantages of Automated Evaluation
+
+- Saves time.
+- Reduces repetitive manual work.
+- Makes repeated testing easier.
+- Helps compare different prompt versions.
+- Provides measurable results.
+
+---
+
+# 13. LLM-as-a-Judge in Detail
+
+LLM-as-a-Judge is a method in which a language model evaluates another AI-generated response using a predefined rubric.
+
+### Working Process
+
+```text
+        User Input
+             |
+             v
+       Prompt A
+             |
+             v
+       AI Model A
+             |
+             v
+     Generated Answer
+             |
+             v
+       Evaluation Prompt
+             |
+             v
+       AI Model B
+       (LLM Judge)
+             |
+             v
+       Quality Score
+             |
+             v
+       Evaluation Report
+```
+
+### Example
+
+**User Question:**
+
+```text
+Explain artificial intelligence in simple words.
+```
+
+**Generated Answer:**
+
+```text
+Artificial intelligence is a technology that allows
+machines to perform tasks that normally require
+human intelligence.
+```
+
+**Judge Evaluation:**
+
+| Criterion | Score out of 5 |
+|---|---:|
+| Accuracy | 5 |
+| Relevance | 5 |
+| Clarity | 5 |
+| Completeness | 4 |
+
+Average = 4.75 / 5
+
+### Best Practices for LLM Judges
+
+- Define clear evaluation criteria.
+- Use the same scoring rubric for all candidates.
+- Provide the original question and generated answer.
+- Ask for evidence supporting each score.
+- Avoid unnecessary information in the judge prompt.
+- Compare judge scores with human evaluations.
+- Be aware of position and style biases.
+
+---
+
+# 14. A/B Testing of Prompts
+
+A/B testing is a technique used to compare two versions of a prompt to determine which performs better.
+
+### Example
+
+A company wants an AI chatbot to answer customer questions.
+
+It creates two prompts.
+
+**Prompt A:**
+
+```text
+Answer the customer's question politely.
+```
+
+**Prompt B:**
+
+```text
+You are a professional customer support assistant.
+Answer the customer's question politely.
+Provide a clear solution in simple language.
+Keep the response concise.
+```
+
+Both prompts are tested using the same evaluation dataset.
+
+### Results
+
+| Evaluation Criteria | Prompt A | Prompt B |
+|---|---:|---:|
+| Accuracy | 80% | 90% |
+| Relevance | 75% | 90% |
+| Instruction Following | 70% | 95% |
+| Clarity | 80% | 90% |
+
+Based on these illustrative results, Prompt B performs better for the selected evaluation criteria.
+
+### A/B Testing Process
+
+1. Create two prompt versions.
+2. Prepare the same test dataset.
+3. Run both prompts using the same model and settings.
+4. Evaluate the generated outputs.
+5. Compare the results.
+6. Select the better-performing prompt.
+7. Test it further before deployment.
+
+### Important Factors
+
+For a fair comparison, keep the model, test inputs, and other generation settings the same wherever possible.
+
+A/B testing helps make prompt improvement data-driven rather than based on personal preference.
+
+---
+
+# 15. Prompt Robustness Testing
+
+Robustness testing checks whether a prompt performs reliably under different input conditions.
+
+A robust prompt should not fail when the input contains minor variations, unusual formatting, or unexpected information.
+
+### Example
+
+Original input:
+
+```text
+The service was excellent.
+```
+
+Variations:
+
+```text
+THE SERVICE WAS EXCELLENT!!!
+```
+
+```text
+The service was excellent :)
+```
+
+```text
+Excellent service, but delivery was late.
+```
+
+The model should handle these variations appropriately.
+
+### Important Robustness Tests
+
+**1. Input Variation**
+
+Test different ways of expressing the same idea.
+
+**2. Misspellings**
+
+Test whether small spelling errors affect the response.
+
+**3. Empty Inputs**
+
+Check how the model handles missing information.
+
+**4. Long Inputs**
+
+Check whether the prompt works with large amounts of text.
+
+**5. Ambiguous Inputs**
+
+Check whether the model recognizes unclear requests.
+
+**6. Instruction Conflicts**
+
+Check how the model responds when user-provided content conflicts with the intended task.
+
+**7. Repeated Runs**
+
+Run the same prompt multiple times to check consistency.
+
+### Why Is Robustness Important?
+
+Real users do not always provide perfectly written inputs. Robustness testing helps ensure that AI applications work reliably in practical situations.
+
+---
+
+# 16. Common Prompt Failures
+
+During evaluation, several common problems may appear.
+
+| Problem | Explanation | Possible Improvement |
+|---|---|---|
+| Ambiguity | Prompt has unclear instructions | Use specific language |
+| Hallucination | Model generates unsupported information | Provide reliable context and require uncertainty handling |
+| Inconsistency | Similar inputs produce different quality responses | Improve instructions and test repeated runs |
+| Irrelevance | Response does not answer the question | Define the task clearly |
+| Incomplete Output | Important information is missing | List required output elements |
+| Formatting Errors | Output does not follow requested format | Specify a strict output structure |
+| Excessive Length | Response contains unnecessary details | Add length constraints |
+| Bias | Output may show unfair assumptions | Test diverse inputs and review results |
+| Instruction Failure | Model ignores some requirements | Make important requirements explicit |
+
+### Example: Ambiguous Prompt
+
+Poor prompt:
+
+```text
+Tell me about Java.
+```
+
+Improved prompt:
+
+```text
+Explain Java programming language to a beginner.
+Include its definition, three features, and one simple example.
+Use easy language.
+```
+
+The improved prompt reduces ambiguity and provides measurable expectations.
+
+---
+
+# 17. Practical Python Implementation
+
+In this section, we will build a simple prompt evaluation system using Python.
+
+We will evaluate a sentiment classification task.
+
+### Problem Statement
+
+We want an AI-based system to classify customer reviews into three categories:
+
+- Positive
+- Negative
+- Neutral
+
+We will compare expected labels with generated labels.
+
+### Step 1: Prepare the Dataset
+
+```python
+expected = [
+    "Positive",
+    "Negative",
+    "Neutral",
+    "Positive",
+    "Negative"
+]
+
+predicted = [
+    "Positive",
+    "Negative",
+    "Positive",
+    "Positive",
+    "Negative"
+]
+```
+
+### Step 2: Calculate Accuracy
+
+```python
+correct = 0
+
+for i in range(len(expected)):
+    if expected[i] == predicted[i]:
+        correct += 1
+
+accuracy = correct / len(expected)
+
+print("Accuracy:", accuracy * 100)
+```
+
+Output:
+
+```text
+Accuracy: 80.0
+```
+
+### Step 3: Use Scikit-Learn Metrics
+
+Install the library:
+
+```bash
+pip install scikit-learn
+```
+
+Python code:
+
+```python
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    classification_report
+)
+
+expected = [
+    "Positive",
+    "Negative",
+    "Neutral",
+    "Positive",
+    "Negative"
+]
+
+predicted = [
+    "Positive",
+    "Negative",
+    "Positive",
+    "Positive",
+    "Negative"
+]
+
+accuracy = accuracy_score(expected, predicted)
+
+precision = precision_score(
+    expected,
+    predicted,
+    average="macro",
+    zero_division=0
+)
+
+recall = recall_score(
+    expected,
+    predicted,
+    average="macro",
+    zero_division=0
+)
+
+f1 = f1_score(
+    expected,
+    predicted,
+    average="macro",
+    zero_division=0
+)
+
+print("Accuracy:", accuracy)
+print("Precision:", precision)
+print("Recall:", recall)
+print("F1 Score:", f1)
+
+print("\nClassification Report:")
+print(classification_report(
+    expected,
+    predicted,
+    zero_division=0
+))
+```
+
+### Step 4: Interpret the Results
+
+The metrics help us understand different aspects of classification performance.
+
+- Accuracy measures overall correctness.
+- Precision measures the correctness of positive predictions for each class.
+- Recall measures how many actual examples of each class were identified.
+- F1-score balances precision and recall.
+
+### Step 5: Improve the Prompt
+
+If the model frequently confuses neutral and positive reviews, we can improve the prompt.
+
+**Initial Prompt:**
+
+```text
+Classify the sentiment of this review.
+```
+
+**Improved Prompt:**
+
+```text
+You are a sentiment analysis assistant.
+
+Classify the given customer review into exactly one
+of these categories:
+
+Positive: The customer expresses satisfaction.
+Negative: The customer expresses dissatisfaction.
+Neutral: The customer expresses neither clearly positive
+nor clearly negative sentiment.
+
+Return only one label:
+Positive, Negative, or Neutral.
+
+Review: {review}
+```
+
+Now we can run the same evaluation dataset again and compare the results.
+
+**Note:** The Python example evaluates classification outputs. It does not call a live AI model or automatically improve the prompt. The predictions are sample data used to demonstrate evaluation metrics.
+
+---
+
+# 18. Real-World Case Study: Customer Support Chatbot
+
+### Problem
+
+An e-commerce company uses an AI chatbot to answer customer questions about orders, refunds, and deliveries.
+
+Initially, the chatbot gives incomplete and sometimes incorrect responses.
+
+### Objective
+
+Improve the chatbot prompt so that it provides accurate, clear, and helpful customer support.
+
+### Initial Prompt
+
+```text
+Answer customer questions.
+```
+
+### Problems Identified
+
+- Responses are sometimes too long.
+- Refund instructions are incomplete.
+- The chatbot sometimes makes assumptions.
+- Responses are not always polite.
+- It does not consistently follow the requested format.
+
+### Improved Prompt
+
+```text
+You are an e-commerce customer support assistant.
+
+Your responsibilities are:
+1. Answer customer questions politely.
+2. Use simple and clear language.
+3. Provide information only from the supplied order
+   and policy details.
+4. Never invent order status or refund information.
+5. If information is missing, ask the customer for clarification.
+6. Keep responses concise.
+
+Customer Query: {query}
+Available Information: {context}
+```
+
+### Evaluation Dataset
+
+The company prepares test cases for:
+
+- Order tracking
+- Refund requests
+- Product replacement
+- Delayed delivery
+- Damaged products
+- Missing order information
+
+### Evaluation Criteria
+
+The responses are checked for:
+
+- Accuracy
+- Relevance
+- Completeness
+- Clarity
+- Politeness
+- Instruction following
+
+### Result
+
+After testing and improving the prompt, the company can identify which version performs more reliably on its test cases.
+
+### Learning
+
+This case study demonstrates that prompt evaluation is useful in real-world AI applications because it helps improve reliability before deployment.
+
+---
+
+# 19. Best Practices for Prompt Evaluation
+
+1. **Define Clear Objectives:** Know exactly what the prompt should achieve.
+
+2. **Use Diverse Test Cases:** Include normal, unusual, ambiguous, and edge-case inputs.
+
+3. **Use the Same Dataset:** Compare prompt versions using the same test cases.
+
+4. **Define Evaluation Criteria:** Decide what makes an output acceptable.
+
+5. **Use Multiple Metrics:** Do not depend on a single score for every task.
+
+6. **Check Outputs Manually:** Human review is important for subjective or high-impact tasks.
+
+7. **Automate Repeated Tests:** Use Python and evaluation tools to save time.
+
+8. **Maintain Version History:** Save older prompts and their evaluation results.
+
+9. **Test Consistency:** Repeat tests when model outputs can vary.
+
+10. **Evaluate Safety:** Check whether the prompt handles unsafe and misleading requests appropriately.
+
+11. **Avoid Overfitting:** Do not design a prompt that works only on a small set of familiar examples.
+
+12. **Perform Regression Testing:** After changing a prompt, rerun previous test cases to ensure that existing functionality has not become worse.
+
+13. **Monitor Real-World Performance:** Continue evaluating prompts after deployment.
+
+---
+
+# 20. Advantages and Limitations of Prompt Evaluation
+
+### Advantages
+
+- Improves the quality of AI-generated responses.
+- Helps identify weaknesses in prompts.
+- Increases consistency and reliability.
+- Reduces incorrect or irrelevant outputs.
+- Helps compare different prompt versions.
+- Supports systematic prompt improvement.
+- Can reduce unnecessary token usage and costs.
+
+### Limitations
+
+- Some generated responses are difficult to evaluate objectively.
+- Human evaluation requires time and effort.
+- Automated metrics may not understand context.
+- LLM judges can introduce their own biases.
+- Results may change across model versions or settings.
+- A small evaluation dataset may not represent real-world usage.
+- A high evaluation score does not guarantee perfect performance in every situation.
+
+---
+
+# 21. Interview and Viva Questions
+
+### Q1. What is Prompt Evaluation?
+
+Prompt Evaluation is the process of testing and measuring prompt quality to determine whether an AI model generates accurate, relevant, consistent, and useful responses.
+
+### Q2. Why is Prompt Evaluation required?
+
+It is required to improve response quality, detect errors, measure consistency, and ensure that AI-generated outputs satisfy user requirements.
+
+### Q3. What are the major components of Prompt Evaluation?
+
+The major components include prompts, test datasets, expected outputs, generated outputs, evaluation criteria, metrics, and feedback.
+
+### Q4. What is Manual Evaluation?
+
+Manual Evaluation is a process in which humans examine AI-generated outputs and judge their quality using predefined criteria.
+
+### Q5. What is Automated Evaluation?
+
+Automated Evaluation uses software, code, or mathematical metrics to measure the quality of generated outputs.
+
+### Q6. What is LLM-as-a-Judge?
+
+It is a technique in which one language model evaluates another model's generated output based on predefined evaluation criteria.
+
+### Q7. What is A/B Testing?
+
+A/B Testing compares two prompt versions using the same test cases to identify which prompt performs better.
+
+### Q8. What is Prompt Robustness?
+
+Prompt robustness is the ability of a prompt to produce reliable results when inputs vary or contain unusual conditions.
+
+### Q9. What is the difference between Precision and Recall?
+
+Precision measures how many predicted positive results are actually positive, while Recall measures how many actual positive cases are correctly identified.
+
+### Q10. What is an F1-Score?
+
+F1-score is the harmonic mean of precision and recall. It balances both metrics.
+
+### Q11. What is a Test Dataset?
+
+A test dataset is a collection of inputs used to evaluate the performance of a prompt or AI system.
+
+### Q12. What is Regression Testing in Prompt Evaluation?
+
+Regression testing checks whether changes made to a prompt have negatively affected its previously working behaviour.
+
+### Q13. What is the difference between BLEU and ROUGE?
+
+BLEU is commonly used for translation evaluation and measures n-gram precision with a brevity penalty. ROUGE is commonly used for summarization evaluation and measures overlap with reference text, often emphasizing recall.
+
+### Q14. Can a prompt with high accuracy still be poor?
+
+Yes. A prompt may have high accuracy but still generate unclear, incomplete, irrelevant, or poorly formatted responses.
+
+---
+
+# 22. Practice Exercises
+
+### Exercise 1: Write a Prompt
+
+Write a prompt that instructs an AI model to explain data structures to a beginner.
+
+Requirements:
+- Simple language
+- Three examples
+- Maximum 150 words
+
+### Exercise 2: Compare Two Prompts
+
+Prompt A:
+
+```text
+Explain artificial intelligence.
+```
+
+Prompt B:
+
+```text
+Explain artificial intelligence to a beginner.
+Include its definition, applications, and two examples.
+Use simple language.
+```
+
+Questions:
+1. Which prompt is more specific?
+2. Which prompt is easier to evaluate?
+3. What additional test cases would you use?
+
+### Exercise 3: Calculate Accuracy
+
+An AI model correctly classifies 45 out of 50 customer reviews.
+
+Calculate its accuracy.
+
+**Answer:**
+
+\[
+Accuracy = \frac{45}{50}\times100 = 90\%
+\]
+
+### Exercise 4: Calculate Precision and Recall
+
+Given:
+
+- True Positive = 40
+- False Positive = 10
+- False Negative = 5
+
+Calculate:
+
+\[
+Precision = \frac{40}{40+10}=0.80=80\%
+\]
+
+\[
+Recall = \frac{40}{40+5}=0.8889=88.89\%
+\]
+
+### Exercise 5: Design an Evaluation Dataset
+
+Create 10 test cases for a sentiment-analysis prompt.
+
+Include:
+- Positive reviews
+- Negative reviews
+- Neutral reviews
+- Ambiguous reviews
+- Reviews with spelling mistakes
+
+### Exercise 6: Perform A/B Testing
+
+Create two prompts for generating product descriptions.
+
+Test both prompts using the same five products.
+
+Compare:
+- Accuracy
+- Relevance
+- Clarity
+- Completeness
+- Formatting
+
+Identify the better-performing prompt.
+
+---
+
+# 23. Quick Revision Notes
+
+| Term | Quick Meaning |
+|---|---|
+| Prompt | Instruction given to an AI model |
+| Prompt Evaluation | Testing the quality of prompts |
+| Test Case | Individual input used for testing |
+| Evaluation Dataset | Collection of test cases |
+| Expected Output | Desired response |
+| Generated Output | Actual AI response |
+| Accuracy | Overall correctness |
+| Precision | Correctness of positive predictions |
+| Recall | Identification of actual positive cases |
+| F1-Score | Balance between precision and recall |
+| BLEU | Text overlap metric commonly used for translation |
+| ROUGE | Text overlap metric commonly used for summarization |
+| Semantic Similarity | Similarity in meaning |
+| Manual Evaluation | Human-based evaluation |
+| Automated Evaluation | Software-based evaluation |
+| LLM-as-a-Judge | AI model evaluating AI output |
+| A/B Testing | Comparing two prompt versions |
+| Robustness | Ability to handle input variations |
+| Regression Testing | Checking that changes do not break previous behaviour |
+
+## Most Important Topics to Remember
+
+For practical understanding and revision, focus especially on:
+
+1. Definition and importance of Prompt Evaluation.
+2. Prompt Evaluation workflow with flowchart.
+3. Evaluation criteria: accuracy, relevance, consistency, completeness, and robustness.
+4. Manual, Automated, and LLM-as-a-Judge evaluation.
+5. Metrics: Accuracy, Precision, Recall, and F1-score.
+6. Test cases and evaluation datasets.
+7. A/B testing and robustness testing.
+8. Practical Python implementation.
+
+---
+
+## Final Summary
+
+Prompt Evaluation is an essential part of building reliable AI applications. It ensures that prompts generate outputs that satisfy the required objectives.
+
+Instead of judging prompts based on personal opinions, we use test cases, evaluation criteria, metrics, and repeated experiments.
+
+The main process is:
+
+**Define Objective → Create Prompt → Prepare Test Cases → Generate Output → Evaluate → Improve → Test Again**
+
+The most important lesson of this topic is:
+
+> **Do not judge a prompt by one impressive response. Judge it by how reliably it performs across a well-designed set of tests.**
