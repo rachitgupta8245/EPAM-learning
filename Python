@@ -1,0 +1,2193 @@
+# 01 — Python Programming
+
+> The working language: data structures, APIs, and testing.
+
+## Learning Objectives
+
+By completing this module, you should be able to:
+
+- Understand Python syntax and programming fundamentals.
+- Write reusable programs using functions and modules.
+- Work confidently with Python data structures.
+- Understand Object-Oriented Programming.
+- Handle files, exceptions, and JSON data.
+- Create and consume APIs.
+- Write automated tests for Python programs.
+- Build small real-world applications.
+
+---
+
+# Module 1: Introduction to Python
+
+## 1.1 What is Python?
+
+Python is a high-level, general-purpose programming language known for its simple syntax and readability.
+
+It is widely used in:
+
+- Artificial Intelligence and Machine Learning.
+- Data Science and Data Analysis.
+- Web Development.
+- Automation and Scripting.
+- API Development.
+- Software Testing.
+
+### Why Python?
+
+1. Easy to learn and read.
+2. Large collection of libraries.
+3. Cross-platform compatibility.
+4. Supports multiple programming paradigms.
+5. Large developer community.
+6. Strong ecosystem for AI and automation.
+
+## 1.2 How Python Works
+
+Python source code is generally executed through an interpreter implementation.
+
+A simplified execution process:
+
+```text
+Python Source Code (.py)
+          |
+          v
+     Python Interpreter
+          |
+          v
+   Bytecode Compilation
+          |
+          v
+    Python Virtual Machine
+          |
+          v
+       Output
+```
+
+Python implementations include:
+- CPython
+- PyPy
+- Jython
+- IronPython
+
+CPython is the standard and most commonly used implementation.
+
+## 1.3 Installing Python
+
+1. Download Python from https://www.python.org/
+2. Install Python.
+3. Enable the option to add Python to PATH on Windows.
+4. Verify installation.
+
+Commands:
+
+```bash
+python --version
+```
+
+or
+
+```bash
+python3 --version
+```
+
+Check pip:
+
+```bash
+pip --version
+```
+
+## 1.4 Your First Python Program
+
+Create a file named `hello.py`.
+
+```python
+print("Hello, World!")
+```
+
+Run:
+
+```bash
+python hello.py
+```
+
+### Understanding print()
+
+`print()` is a built-in function used to display output.
+
+```python
+print("Hello")
+print(10)
+print(10 + 20)
+```
+
+Output:
+
+```text
+Hello
+10
+30
+```
+
+---
+
+# Module 2: Python Fundamentals
+
+## 2.1 Variables
+
+A variable is a named reference used to store or refer to a value.
+
+```python
+name = "Rachit"
+age = 21
+height = 5.10
+is_student = True
+```
+
+Python does not require explicit variable type declarations.
+
+### Variable Naming Rules
+
+- Names can contain letters, numbers, and underscores.
+- Names cannot start with a number.
+- Names are case-sensitive.
+- Python keywords cannot be used as variable names.
+- Use meaningful names.
+
+Good examples:
+
+```python
+student_name = "Aman"
+total_marks = 450
+```
+
+Avoid:
+
+```python
+x = "Aman"
+tm = 450
+```
+
+## 2.2 Data Types
+
+A data type defines the kind of value a variable refers to.
+
+| Data type | Description | Example |
+|---|---|---|
+| int | Integer numbers | `10` |
+| float | Decimal numbers | `10.5` |
+| str | Text | `"Python"` |
+| bool | True or False | `True` |
+| list | Ordered mutable collection | `[1, 2, 3]` |
+| tuple | Ordered immutable collection | `(1, 2, 3)` |
+| set | Unique elements | `{1, 2, 3}` |
+| dict | Key-value collection | `{"name": "Aman"}` |
+| NoneType | Absence of a value | `None` |
+
+Check the type:
+
+```python
+age = 21
+print(type(age))
+```
+
+Output:
+
+```text
+<class 'int'>
+```
+
+## 2.3 Type Conversion
+
+Type conversion means converting one data type into another.
+
+```python
+age = "21"
+
+age = int(age)
+
+print(age + 5)
+```
+
+Output:
+
+```text
+26
+```
+
+Common conversion functions:
+
+```python
+int()
+float()
+str()
+bool()
+list()
+tuple()
+set()
+```
+
+Important: Not every value can be converted successfully.
+
+```python
+int("hello")  # ValueError
+```
+
+## 2.4 Taking User Input
+
+The `input()` function accepts user input.
+
+```python
+name = input("Enter your name: ")
+
+print("Hello", name)
+```
+
+Important: `input()` returns a string.
+
+For numerical input:
+
+```python
+age = int(input("Enter your age: "))
+
+print(age + 1)
+```
+
+## 2.5 Operators in Python
+
+### Arithmetic Operators
+
+| Operator | Meaning | Example |
+|---|---|---|
+| + | Addition | `10 + 5` |
+| - | Subtraction | `10 - 5` |
+| * | Multiplication | `10 * 5` |
+| / | Division | `10 / 5` |
+| // | Floor division | `10 // 3` |
+| % | Modulus | `10 % 3` |
+| ** | Exponentiation | `2 ** 3` |
+
+### Comparison Operators
+
+```python
+==   # Equal
+!=   # Not equal
+>    # Greater than
+<    # Less than
+>=   # Greater than or equal
+<=   # Less than or equal
+```
+
+### Logical Operators
+
+```python
+and
+or
+not
+```
+
+Example:
+
+```python
+age = 21
+
+if age >= 18 and age <= 30:
+    print("Eligible")
+```
+
+### Assignment Operators
+
+```python
+x = 10
+x += 5
+x -= 2
+x *= 2
+x /= 2
+```
+
+### Membership Operators
+
+```python
+in
+not in
+```
+
+Example:
+
+```python
+languages = ["Python", "Java", "C++"]
+
+print("Python" in languages)
+```
+
+### Identity Operators
+
+```python
+is
+is not
+```
+
+These check whether two references point to the same object, not simply whether their values are equal.
+
+## 2.6 Conditional Statements
+
+Conditional statements allow a program to make decisions.
+
+### if statement
+
+```python
+age = 20
+
+if age >= 18:
+    print("Adult")
+```
+
+### if-else statement
+
+```python
+age = 16
+
+if age >= 18:
+    print("Adult")
+else:
+    print("Minor")
+```
+
+### if-elif-else
+
+```python
+marks = 85
+
+if marks >= 90:
+    print("Grade A")
+elif marks >= 75:
+    print("Grade B")
+elif marks >= 50:
+    print("Grade C")
+else:
+    print("Fail")
+```
+
+### Nested if
+
+```python
+age = 21
+has_id = True
+
+if age >= 18:
+    if has_id:
+        print("Entry allowed")
+```
+
+### Ternary Operator
+
+A shorter way to write a simple conditional expression.
+
+```python
+age = 20
+
+result = "Adult" if age >= 18 else "Minor"
+
+print(result)
+```
+
+## 2.7 Loops
+
+Loops execute a block of code repeatedly.
+
+### for loop
+
+Used to iterate over a sequence or iterable.
+
+```python
+for i in range(5):
+    print(i)
+```
+
+Output:
+
+```text
+0
+1
+2
+3
+4
+```
+
+### Understanding range()
+
+```python
+range(start, stop, step)
+```
+
+Example:
+
+```python
+for i in range(1, 10, 2):
+    print(i)
+```
+
+Output:
+
+```text
+1
+3
+5
+7
+9
+```
+
+### while loop
+
+Executes while a condition remains true.
+
+```python
+count = 1
+
+while count <= 5:
+    print(count)
+    count += 1
+```
+
+### break
+
+Terminates the loop.
+
+```python
+for i in range(10):
+    if i == 5:
+        break
+    print(i)
+```
+
+### continue
+
+Skips the current iteration.
+
+```python
+for i in range(5):
+    if i == 2:
+        continue
+    print(i)
+```
+
+### pass
+
+A placeholder statement that does nothing.
+
+```python
+if True:
+    pass
+```
+
+---
+
+# Module 3: Functions in Python
+
+## 3.1 What is a Function?
+
+A function is a reusable block of code that performs a specific task.
+
+Advantages:
+
+- Code reusability.
+- Better organization.
+- Easier debugging.
+- Reduced code duplication.
+- Improved maintainability.
+
+## 3.2 Creating a Function
+
+```python
+def greet():
+    print("Hello, Python!")
+
+greet()
+```
+
+`def` is the keyword used to define a function.
+
+## 3.3 Parameters and Arguments
+
+Parameters are variables defined in a function declaration.
+
+Arguments are actual values passed when calling the function.
+
+```python
+def greet(name):
+    print("Hello", name)
+
+greet("Rachit")
+```
+
+## 3.4 Return Statement
+
+The `return` statement sends a result back to the caller.
+
+```python
+def add(a, b):
+    return a + b
+
+result = add(10, 20)
+
+print(result)
+```
+
+Difference between print and return:
+
+- `print()` displays a value.
+- `return` sends a value back to the calling code.
+
+## 3.5 Types of Function Arguments
+
+### Positional Arguments
+
+```python
+def student(name, age):
+    print(name, age)
+
+student("Aman", 21)
+```
+
+### Keyword Arguments
+
+```python
+student(age=21, name="Aman")
+```
+
+### Default Arguments
+
+```python
+def greet(name="Student"):
+    print("Hello", name)
+
+greet()
+greet("Rachit")
+```
+
+### Variable-Length Arguments
+
+`*args` accepts multiple positional arguments.
+
+```python
+def total(*numbers):
+    return sum(numbers)
+
+print(total(10, 20, 30))
+```
+
+`**kwargs` accepts multiple keyword arguments.
+
+```python
+def student(**details):
+    print(details)
+
+student(name="Aman", age=21)
+```
+
+## 3.6 Lambda Functions
+
+Lambda functions are small anonymous functions.
+
+```python
+square = lambda x: x * x
+
+print(square(5))
+```
+
+Output:
+
+```text
+25
+```
+
+## 3.7 Scope of Variables
+
+### Local Variable
+
+Created inside a function.
+
+### Global Variable
+
+Created outside functions.
+
+```python
+x = 10
+
+def show():
+    y = 20
+    print(x, y)
+
+show()
+```
+
+Use `global` when you need to reassign a global variable inside a function.
+
+```python
+count = 0
+
+def update():
+    global count
+    count += 1
+```
+
+Python also has the `nonlocal` keyword for working with variables in enclosing function scopes.
+
+---
+
+# Module 4: Python Data Structures
+
+Data structures organize and store data so that it can be accessed and modified efficiently.
+
+The four most important built-in collection types are:
+
+1. List
+2. Tuple
+3. Set
+4. Dictionary
+
+## 4.1 Lists
+
+A list is an ordered, mutable collection that allows duplicate values.
+
+```python
+numbers = [10, 20, 30, 40]
+```
+
+### Accessing Elements
+
+```python
+print(numbers[0])   # 10
+print(numbers[-1])  # 40
+```
+
+### List Slicing
+
+```python
+numbers = [10, 20, 30, 40, 50]
+
+print(numbers[1:4])
+```
+
+Output:
+
+```text
+[20, 30, 40]
+```
+
+General syntax:
+
+```python
+list[start:stop:step]
+```
+
+### Important List Methods
+
+```python
+numbers.append(60)       # Add at end
+numbers.insert(1, 15)    # Insert at index
+numbers.remove(20)       # Remove by value
+numbers.pop()            # Remove last item
+numbers.pop(0)            # Remove by index
+numbers.sort()            # Sort in place
+numbers.reverse()         # Reverse in place
+numbers.clear()           # Remove all elements
+```
+
+### List Comprehension
+
+A concise way to create lists.
+
+```python
+squares = [x*x for x in range(1, 6)]
+
+print(squares)
+```
+
+Output:
+
+```text
+[1, 4, 9, 16, 25]
+```
+
+With condition:
+
+```python
+even = [x for x in range(10) if x % 2 == 0]
+```
+
+## 4.2 Tuples
+
+A tuple is an ordered, immutable collection.
+
+```python
+coordinates = (10, 20)
+```
+
+Properties:
+
+- Ordered.
+- Allows duplicates.
+- Cannot be modified after creation.
+- Supports indexing and slicing.
+
+Access:
+
+```python
+print(coordinates[0])
+```
+
+Tuple unpacking:
+
+```python
+x, y = coordinates
+```
+
+Single-element tuple:
+
+```python
+value = (10,)
+```
+
+The comma is important.
+
+## 4.3 Sets
+
+A set is an unordered collection of unique elements.
+
+```python
+numbers = {1, 2, 3, 3, 4}
+
+print(numbers)
+```
+
+Duplicate values are removed.
+
+### Set Methods
+
+```python
+numbers.add(5)
+numbers.remove(2)
+numbers.discard(10)
+```
+
+`remove()` raises an error if the element is absent, while `discard()` does not.
+
+### Set Operations
+
+```python
+A = {1, 2, 3}
+B = {3, 4, 5}
+
+print(A | B)  # Union
+print(A & B)  # Intersection
+print(A - B)  # Difference
+print(A ^ B)  # Symmetric difference
+```
+
+Sets are useful for removing duplicates and checking membership.
+
+## 4.4 Dictionaries
+
+A dictionary stores data as key-value pairs.
+
+```python
+student = {
+    "name": "Rachit",
+    "age": 21,
+    "course": "CSE"
+}
+```
+
+### Accessing Values
+
+```python
+print(student["name"])
+print(student.get("age"))
+```
+
+`get()` can return a default value if a key is missing.
+
+### Adding and Updating
+
+```python
+student["city"] = "Bhopal"
+student["age"] = 22
+```
+
+### Removing Values
+
+```python
+student.pop("age")
+```
+
+### Important Dictionary Methods
+
+```python
+student.keys()
+student.values()
+student.items()
+student.get("name")
+student.update({"age": 21})
+student.pop("course")
+```
+
+### Dictionary Iteration
+
+```python
+for key, value in student.items():
+    print(key, value)
+```
+
+### Dictionary Comprehension
+
+```python
+squares = {x: x*x for x in range(1, 6)}
+```
+
+## 4.5 Comparison of Data Structures
+
+| Feature | List | Tuple | Set | Dictionary |
+|---|---|---|---|---|
+| Ordered | Yes | Yes | No guaranteed sequence | Insertion ordered |
+| Mutable | Yes | No | Yes | Yes |
+| Duplicates | Yes | Yes | No elements duplicated | Keys unique |
+| Indexing | Yes | Yes | No | By key |
+| Syntax | `[]` | `()` | `{}` | `{key:value}` |
+
+Note: Empty set is created using `set()`, because `{}` creates an empty dictionary.
+
+## 4.6 Choosing the Right Data Structure
+
+- Use a list when order and modification are important.
+- Use a tuple for fixed collections.
+- Use a set when uniqueness and set operations matter.
+- Use a dictionary when data is organized through keys.
+
+## 4.7 Mutable vs Immutable Objects
+
+Mutable objects can be changed after creation.
+
+Examples:
+- List
+- Dictionary
+- Set
+
+Immutable objects cannot be changed after creation.
+
+Examples:
+- Integer
+- Float
+- String
+- Tuple
+- Boolean
+
+Example:
+
+```python
+a = [1, 2, 3]
+a.append(4)
+
+b = "Python"
+# Strings cannot be changed in place.
+```
+
+---
+
+# Module 5: Strings and Useful Built-in Functions
+
+## 5.1 Strings
+
+A string is an immutable sequence of characters.
+
+```python
+language = "Python"
+```
+
+### String Operations
+
+```python
+text = "Hello Python"
+
+print(len(text))
+print(text.upper())
+print(text.lower())
+print(text.title())
+print(text.replace("Python", "World"))
+print(text.find("Python"))
+print(text.count("o"))
+print(text.startswith("Hello"))
+print(text.endswith("Python"))
+```
+
+### String Slicing
+
+```python
+word = "Python"
+
+print(word[0:3])  # Pyt
+print(word[::-1]) # nohtyP
+```
+
+### String Formatting
+
+Using f-strings:
+
+```python
+name = "Rachit"
+age = 21
+
+print(f"My name is {name} and I am {age}")
+```
+
+F-strings are generally the preferred readable formatting approach.
+
+## 5.2 Important Built-in Functions
+
+```python
+len()
+type()
+range()
+sum()
+min()
+max()
+sorted()
+enumerate()
+zip()
+map()
+filter()
+any()
+all()
+abs()
+round()
+```
+
+Examples:
+
+```python
+numbers = [10, 20, 30]
+
+print(sum(numbers))
+print(max(numbers))
+print(min(numbers))
+```
+
+### enumerate()
+
+Provides an index along with each item.
+
+```python
+names = ["Aman", "Ravi", "Karan"]
+
+for index, name in enumerate(names):
+    print(index, name)
+```
+
+### zip()
+
+Combines elements from multiple iterables.
+
+```python
+names = ["Aman", "Ravi"]
+marks = [80, 90]
+
+for name, mark in zip(names, marks):
+    print(name, mark)
+```
+
+### map()
+
+Applies a function to every item.
+
+```python
+numbers = [1, 2, 3]
+
+result = list(map(lambda x: x*2, numbers))
+```
+
+### filter()
+
+Selects items satisfying a condition.
+
+```python
+numbers = [1, 2, 3, 4, 5, 6]
+
+result = list(filter(lambda x: x % 2 == 0, numbers))
+```
+
+---
+
+# Module 6: Object-Oriented Programming (OOP)
+
+OOP organizes programs around objects and classes.
+
+It helps create reusable, modular, and maintainable software.
+
+## 6.1 Class and Object
+
+A class is a blueprint for creating objects.
+
+An object is an instance of a class.
+
+```python
+class Student:
+
+    def display(self):
+        print("I am a student")
+
+s1 = Student()
+
+s1.display()
+```
+
+## 6.2 Constructor
+
+The `__init__()` method initializes an object's attributes.
+
+```python
+class Student:
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def display(self):
+        print(self.name, self.age)
+
+s1 = Student("Rachit", 21)
+
+s1.display()
+```
+
+## 6.3 The self Keyword
+
+`self` refers to the current instance of a class.
+
+It allows methods to access the attributes and methods of that particular object.
+
+## 6.4 Four Pillars of OOP
+
+### 1. Encapsulation
+
+Combining data and methods within a class and controlling access to internal state.
+
+```python
+class BankAccount:
+
+    def __init__(self, balance):
+        self.__balance = balance
+
+    def get_balance(self):
+        return self.__balance
+```
+
+Python uses naming conventions and name mangling rather than strict private access modifiers.
+
+### 2. Inheritance
+
+One class can derive attributes and methods from another class.
+
+```python
+class Animal:
+
+    def eat(self):
+        print("Eating")
+
+class Dog(Animal):
+
+    def bark(self):
+        print("Barking")
+
+d = Dog()
+
+d.eat()
+d.bark()
+```
+
+Types include:
+- Single inheritance
+- Multiple inheritance
+- Multilevel inheritance
+- Hierarchical inheritance
+- Hybrid inheritance
+
+### 3. Polymorphism
+
+The same interface can behave differently for different objects.
+
+```python
+class Dog:
+
+    def sound(self):
+        print("Bark")
+
+class Cat:
+
+    def sound(self):
+        print("Meow")
+
+for animal in [Dog(), Cat()]:
+    animal.sound()
+```
+
+### 4. Abstraction
+
+Hiding implementation details and exposing essential functionality.
+
+Python supports abstraction through the `abc` module.
+
+```python
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+
+    @abstractmethod
+    def area(self):
+        pass
+
+class Square(Shape):
+
+    def __init__(self, side):
+        self.side = side
+
+    def area(self):
+        return self.side ** 2
+```
+
+## 6.5 Additional OOP Concepts
+
+Study:
+- Instance variables.
+- Class variables.
+- Instance methods.
+- Class methods using `@classmethod`.
+- Static methods using `@staticmethod`.
+- Method overriding.
+- `super()` function.
+- Multiple inheritance.
+- Method Resolution Order (MRO).
+- Composition.
+
+Example of class and static methods:
+
+```python
+class Calculator:
+
+    @staticmethod
+    def add(a, b):
+        return a + b
+
+print(Calculator.add(10, 20))
+```
+
+---
+
+# Module 7: Exception Handling
+
+## 7.1 What is an Exception?
+
+An exception is an event that interrupts the normal execution of a program.
+
+Examples:
+- ZeroDivisionError
+- ValueError
+- TypeError
+- IndexError
+- KeyError
+- FileNotFoundError
+- ImportError
+
+## 7.2 try and except
+
+```python
+try:
+    number = int(input("Enter a number: "))
+    print(10 / number)
+
+except ValueError:
+    print("Enter a valid integer")
+
+except ZeroDivisionError:
+    print("Cannot divide by zero")
+```
+
+## 7.3 else and finally
+
+```python
+try:
+    result = 10 / 2
+
+except ZeroDivisionError:
+    print("Error")
+
+else:
+    print(result)
+
+finally:
+    print("Execution completed")
+```
+
+- `try`: Code that may raise an exception.
+- `except`: Handles matching exceptions.
+- `else`: Runs if no exception occurs.
+- `finally`: Runs whether an exception occurs or not.
+
+## 7.4 Raising Exceptions
+
+Use `raise` to generate an exception intentionally.
+
+```python
+age = -5
+
+if age < 0:
+    raise ValueError("Age cannot be negative")
+```
+
+## 7.5 Custom Exceptions
+
+```python
+class InvalidAgeError(Exception):
+    pass
+
+age = -1
+
+if age < 0:
+    raise InvalidAgeError("Invalid age")
+```
+
+---
+
+# Module 8: File Handling
+
+File handling allows programs to read, write, and manage files.
+
+## 8.1 Opening Files
+
+```python
+file = open("data.txt", "r")
+```
+
+Common modes:
+
+| Mode | Purpose |
+|---|---|
+| r | Read |
+| w | Write and overwrite |
+| a | Append |
+| x | Create a new file |
+| b | Binary mode |
+| t | Text mode |
+
+## 8.2 Reading Files
+
+```python
+with open("data.txt", "r") as file:
+    content = file.read()
+    print(content)
+```
+
+Other methods:
+
+```python
+file.readline()
+file.readlines()
+```
+
+## 8.3 Writing Files
+
+```python
+with open("data.txt", "w") as file:
+    file.write("Learning Python")
+```
+
+## 8.4 Appending Files
+
+```python
+with open("data.txt", "a") as file:
+    file.write("\nLearning APIs")
+```
+
+## 8.5 Why use with?
+
+The `with` statement uses a context manager to ensure the file is properly closed, including when an exception occurs.
+
+---
+
+# Module 9: Modules, Packages and Virtual Environments
+
+## 9.1 Modules
+
+A module is a Python file containing reusable code.
+
+Example: `calculator.py`
+
+```python
+def add(a, b):
+    return a + b
+```
+
+Another file:
+
+```python
+import calculator
+
+print(calculator.add(10, 20))
+```
+
+Other import styles:
+
+```python
+import math
+from math import sqrt
+import math as m
+```
+
+## 9.2 Packages
+
+A package organizes related Python modules into a directory structure.
+
+Example:
+
+```text
+my_package/
+    __init__.py
+    calculator.py
+    utilities.py
+```
+
+## 9.3 Standard Library
+
+Python includes many built-in modules.
+
+Important modules:
+
+| Module | Purpose |
+|---|---|
+| math | Mathematical operations |
+| random | Random values |
+| datetime | Date and time |
+| os | Operating system operations |
+| pathlib | File system paths |
+| json | JSON processing |
+| collections | Specialized data structures |
+| statistics | Statistical operations |
+| re | Regular expressions |
+
+Example:
+
+```python
+import math
+
+print(math.sqrt(25))
+print(math.pi)
+```
+
+## 9.4 pip
+
+`pip` is Python's package installer.
+
+```bash
+pip install requests
+pip install pytest
+pip list
+pip uninstall requests
+```
+
+## 9.5 Virtual Environments
+
+A virtual environment isolates project dependencies.
+
+Create:
+
+```bash
+python -m venv venv
+```
+
+Activate on Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+Activate on Linux/macOS:
+
+```bash
+source venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install requests pytest
+```
+
+Save dependencies:
+
+```bash
+pip freeze > requirements.txt
+```
+
+Install them later:
+
+```bash
+pip install -r requirements.txt
+```
+
+Deactivate:
+
+```bash
+deactivate
+```
+
+---
+
+# Module 10: Intermediate Python Concepts
+
+These concepts are important when writing practical applications.
+
+## 10.1 Iterables and Iterators
+
+An iterable is an object that can return an iterator.
+
+Examples:
+- Lists
+- Tuples
+- Strings
+- Dictionaries
+- Sets
+
+An iterator produces elements one at a time.
+
+```python
+numbers = [10, 20, 30]
+
+iterator = iter(numbers)
+
+print(next(iterator))
+print(next(iterator))
+print(next(iterator))
+```
+
+## 10.2 Generators
+
+Generators produce values lazily instead of storing all results at once.
+
+They use the `yield` keyword.
+
+```python
+def numbers():
+    yield 1
+    yield 2
+    yield 3
+
+for number in numbers():
+    print(number)
+```
+
+Benefits:
+- Memory efficiency.
+- Lazy evaluation.
+- Useful for large datasets.
+
+## 10.3 Decorators
+
+A decorator modifies or extends the behaviour of a function without directly changing its source code.
+
+```python
+def decorator(func):
+
+    def wrapper():
+        print("Before function")
+        func()
+        print("After function")
+
+    return wrapper
+
+@decorator
+def greet():
+    print("Hello")
+
+greet()
+```
+
+## 10.4 Context Managers
+
+Context managers manage resources using the `with` statement.
+
+Example:
+
+```python
+with open("data.txt", "r") as file:
+    print(file.read())
+```
+
+You can create custom context managers using classes or `contextlib`.
+
+## 10.5 Shallow Copy and Deep Copy
+
+A shallow copy creates a new outer object but may share nested objects.
+
+A deep copy recursively copies nested objects.
+
+```python
+import copy
+
+original = [[1, 2], [3, 4]]
+
+shallow = copy.copy(original)
+deep = copy.deepcopy(original)
+```
+
+## 10.6 Sorting
+
+```python
+numbers = [5, 2, 9, 1]
+
+print(sorted(numbers))
+```
+
+Custom sorting:
+
+```python
+students = [
+    {"name": "Aman", "marks": 80},
+    {"name": "Ravi", "marks": 95}
+]
+
+students.sort(key=lambda student: student["marks"], reverse=True)
+```
+
+---
+
+# Module 11: Working with JSON
+
+JSON stands for JavaScript Object Notation.
+
+It is a lightweight data-interchange format commonly used by APIs.
+
+Example JSON:
+
+```json
+{
+    "name": "Rachit",
+    "age": 21,
+    "skills": ["Python", "Java"]
+}
+```
+
+## 11.1 Python and JSON
+
+Python provides the `json` module.
+
+Important functions:
+
+- `json.dumps()` — Python object to JSON string.
+- `json.loads()` — JSON string to Python object.
+- `json.dump()` — Write JSON to a file.
+- `json.load()` — Read JSON from a file.
+
+Example:
+
+```python
+import json
+
+student = {
+    "name": "Rachit",
+    "age": 21
+}
+
+json_data = json.dumps(student)
+
+print(json_data)
+```
+
+Convert JSON to Python:
+
+```python
+data = json.loads(json_data)
+
+print(data["name"])
+```
+
+Save JSON:
+
+```python
+with open("student.json", "w") as file:
+    json.dump(student, file, indent=4)
+```
+
+Read JSON:
+
+```python
+with open("student.json", "r") as file:
+    data = json.load(file)
+```
+
+---
+
+# Module 12: APIs and HTTP
+
+## 12.1 What is an API?
+
+API stands for Application Programming Interface.
+
+An API defines how different software applications communicate with each other.
+
+Example:
+
+A weather application may request current weather information from a weather API instead of collecting weather data itself.
+
+## 12.2 How an API Works
+
+```text
+       Client Application
+               |
+               |
+          HTTP Request
+               |
+               v
+          API Server
+               |
+               v
+          Processing
+               |
+               v
+         Database/Data
+               |
+               v
+          API Response
+               |
+               v
+       Client Application
+```
+
+## 12.3 What is HTTP?
+
+HTTP stands for Hypertext Transfer Protocol.
+
+It defines how clients and servers communicate over the web.
+
+HTTPS is HTTP secured using TLS.
+
+## 12.4 HTTP Methods
+
+| Method | Purpose |
+|---|---|
+| GET | Retrieve information |
+| POST | Submit or create information |
+| PUT | Replace a resource |
+| PATCH | Partially update a resource |
+| DELETE | Delete a resource |
+
+These are common conventions for REST APIs.
+
+## 12.5 HTTP Status Codes
+
+| Code | Meaning |
+|---|---|
+| 200 | OK |
+| 201 | Created |
+| 204 | No Content |
+| 400 | Bad Request |
+| 401 | Unauthorized |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 500 | Internal Server Error |
+| 503 | Service Unavailable |
+
+## 12.6 What is REST API?
+
+REST stands for Representational State Transfer.
+
+REST is an architectural style for designing networked applications.
+
+Important principles and characteristics:
+
+- Client-server separation.
+- Stateless communication.
+- Cacheability.
+- Uniform interface.
+- Layered system.
+
+REST APIs commonly exchange JSON data.
+
+## 12.7 Sending API Requests with Python
+
+Install Requests:
+
+```bash
+pip install requests
+```
+
+GET request:
+
+```python
+import requests
+
+url = "https://jsonplaceholder.typicode.com/posts/1"
+
+response = requests.get(url, timeout=10)
+
+print(response.status_code)
+print(response.json())
+```
+
+POST request:
+
+```python
+import requests
+
+url = "https://jsonplaceholder.typicode.com/posts"
+
+data = {
+    "title": "Learning Python",
+    "body": "Learning API development",
+    "userId": 1
+}
+
+response = requests.post(url, json=data, timeout=10)
+
+print(response.status_code)
+print(response.json())
+```
+
+Note: JSONPlaceholder is a testing service. Its write operations are simulated and are not permanently stored.
+
+## 12.8 Handling API Errors
+
+```python
+import requests
+
+try:
+    response = requests.get(
+        "https://jsonplaceholder.typicode.com/posts/1",
+        timeout=10
+    )
+
+    response.raise_for_status()
+
+    data = response.json()
+
+    print(data)
+
+except requests.exceptions.Timeout:
+    print("Request timed out")
+
+except requests.exceptions.HTTPError as error:
+    print("HTTP error:", error)
+
+except requests.exceptions.RequestException as error:
+    print("Request failed:", error)
+```
+
+## 12.9 API Authentication
+
+Some APIs require authentication.
+
+Common approaches:
+
+- API Keys.
+- Bearer Tokens.
+- OAuth 2.0.
+- Basic Authentication.
+
+Example using a bearer token:
+
+```python
+import requests
+import os
+
+token = os.environ["API_TOKEN"]
+
+headers = {
+    "Authorization": f"Bearer {token}"
+}
+
+response = requests.get(
+    "https://api.example.com/data",
+    headers=headers,
+    timeout=10
+)
+```
+
+Never publish API keys, passwords, or secret tokens in a public GitHub repository.
+
+## 12.10 Important API Concepts to Understand
+
+- Request headers.
+- Query parameters.
+- Request body.
+- Response body.
+- JSON serialization.
+- Authentication.
+- Pagination.
+- Rate limiting.
+- Timeouts.
+- Error handling.
+- API documentation.
+- Environment variables.
+
+---
+
+# Module 13: Python Testing
+
+## 13.1 What is Software Testing?
+
+Software testing is the process of checking whether a program behaves as expected.
+
+Testing helps identify:
+- Bugs.
+- Incorrect calculations.
+- Unexpected outputs.
+- Edge-case failures.
+- Regressions after code changes.
+
+## 13.2 Types of Testing
+
+### Unit Testing
+
+Tests individual functions or components.
+
+### Integration Testing
+
+Checks whether multiple components work correctly together.
+
+### System Testing
+
+Tests the complete application.
+
+### Regression Testing
+
+Checks whether new changes have broken existing functionality.
+
+### End-to-End Testing
+
+Tests a complete user workflow.
+
+## 13.3 Assertions
+
+An assertion checks whether a condition is true.
+
+```python
+x = 10
+
+assert x == 10
+```
+
+If the condition is false, Python raises `AssertionError`.
+
+Assertions are useful in tests, but they should not be used as the main mechanism for validating untrusted user input.
+
+## 13.4 Testing with unittest
+
+Python provides a built-in testing framework called `unittest`.
+
+Create `calculator.py`:
+
+```python
+def add(a, b):
+    return a + b
+
+def subtract(a, b):
+    return a - b
+```
+
+Create `test_calculator.py`:
+
+```python
+import unittest
+from calculator import add, subtract
+
+class TestCalculator(unittest.TestCase):
+
+    def test_add(self):
+        self.assertEqual(add(10, 20), 30)
+
+    def test_subtract(self):
+        self.assertEqual(subtract(20, 10), 10)
+
+if __name__ == "__main__":
+    unittest.main()
+```
+
+Run:
+
+```bash
+python -m unittest
+```
+
+## 13.5 Testing with pytest
+
+`pytest` is a popular third-party Python testing framework.
+
+Install:
+
+```bash
+pip install pytest
+```
+
+Create `test_calculator.py`:
+
+```python
+from calculator import add
+
+def test_add():
+    assert add(10, 20) == 30
+
+def test_add_negative():
+    assert add(-5, 5) == 0
+```
+
+Run:
+
+```bash
+pytest
+```
+
+## 13.6 Fixtures
+
+Fixtures provide reusable test setup.
+
+```python
+import pytest
+
+@pytest.fixture
+def numbers():
+    return [10, 20, 30]
+
+def test_total(numbers):
+    assert sum(numbers) == 60
+```
+
+## 13.7 Parameterized Testing
+
+Test multiple input combinations using `pytest.mark.parametrize`.
+
+```python
+import pytest
+
+@pytest.mark.parametrize(
+    "a,b,expected",
+    [
+        (2, 3, 5),
+        (10, 20, 30),
+        (-5, 5, 0)
+    ]
+)
+def test_add(a, b, expected):
+    assert a + b == expected
+```
+
+## 13.8 Mocking
+
+Mocking replaces a real dependency with a controlled substitute during testing.
+
+It is useful when testing:
+- APIs.
+- Databases.
+- External services.
+- Time-dependent operations.
+
+Example:
+
+```python
+from unittest.mock import Mock
+
+api = Mock()
+
+api.get_data.return_value = {"status": "success"}
+
+result = api.get_data()
+
+assert result["status"] == "success"
+```
+
+## 13.9 Code Coverage
+
+Code coverage measures how much of the code is executed during tests.
+
+Install:
+
+```bash
+pip install pytest-cov
+```
+
+Run:
+
+```bash
+pytest --cov=.
+```
+
+High coverage does not automatically mean that a program is correctly tested. Test quality and meaningful assertions matter.
+
+---
+
+# Module 14: Debugging and Code Quality
+
+## 14.1 Debugging
+
+Debugging means finding and fixing errors in a program.
+
+Common techniques:
+
+- Reading error messages.
+- Using print statements.
+- Using Python's debugger.
+- Checking variable values.
+- Reproducing errors.
+- Writing tests for discovered bugs.
+
+## 14.2 Python Debugger
+
+Python includes `pdb`.
+
+```python
+import pdb
+
+x = 10
+
+pdb.set_trace()
+
+y = x + 20
+
+print(y)
+```
+
+## 14.3 PEP 8
+
+PEP 8 is Python's style guide.
+
+Important practices:
+
+- Use 4 spaces for indentation.
+- Use meaningful variable names.
+- Use lowercase_with_underscores for functions and variables.
+- Use CapWords for class names.
+- Keep code readable.
+- Avoid unnecessarily long lines.
+- Add meaningful comments and documentation.
+
+## 14.4 Type Hints
+
+Type hints describe the expected types of variables and function parameters.
+
+```python
+def add(a: int, b: int) -> int:
+    return a + b
+```
+
+Python does not enforce these annotations automatically at runtime.
+
+## 14.5 Docstrings
+
+Docstrings describe the purpose and usage of modules, classes, and functions.
+
+```python
+def add(a, b):
+    """Return the sum of two numbers."""
+    return a + b
+```
+
+---
+
+# Module 15: Practical Assignments
+
+Complete these exercises without copying solutions.
+
+## Beginner Level
+
+1. Create a program that checks whether a number is even or odd.
+2. Create a program to calculate the factorial of a number.
+3. Reverse a string without using a built-in reverse function.
+4. Find the largest number in a list.
+5. Count vowels in a string.
+6. Print the multiplication table of a number.
+7. Check whether a string is a palindrome.
+8. Remove duplicate elements from a list.
+9. Calculate the sum and average of list elements.
+10. Create a student grade calculator.
+
+## Intermediate Level
+
+1. Create a contact book using dictionaries.
+2. Create a bank account class.
+3. Read student records from a JSON file.
+4. Build a program to count word frequency in a text file.
+5. Create a number guessing game.
+6. Build a simple library management system.
+7. Write a program using inheritance and polymorphism.
+8. Build a command-line expense tracker.
+9. Create a program that handles invalid input using exceptions.
+10. Write unit tests for your calculator.
+
+## API Assignments
+
+1. Fetch posts from JSONPlaceholder.
+2. Retrieve a specific post using its ID.
+3. Fetch multiple posts and filter them.
+4. Send a POST request with JSON data.
+5. Handle invalid URLs and timeout errors.
+6. Print useful information from an API response.
+7. Build a command-line application that consumes an API.
+
+## Testing Assignments
+
+1. Write tests for addition and subtraction.
+2. Test a function with positive and negative numbers.
+3. Test empty lists and invalid input.
+4. Write parameterized tests.
+5. Use fixtures to share test data.
+6. Mock an external API call.
+7. Measure test coverage.
+
+---
+
+# Module 16: Final Projects
+
+Complete at least one major project to demonstrate your understanding.
+
+## Project 1: Student Management System
+
+Features:
+
+- Add students.
+- View student records.
+- Update information.
+- Delete students.
+- Search students.
+- Calculate average marks.
+- Store records in JSON.
+
+Concepts used:
+- Functions.
+- Dictionaries.
+- Lists.
+- File handling.
+- JSON.
+- Exception handling.
+
+## Project 2: Expense Tracker
+
+Features:
+
+- Add expenses.
+- Categorize expenses.
+- Display all transactions.
+- Calculate total spending.
+- Filter expenses by category.
+- Save and load expense data.
+- Generate a spending summary.
+
+Concepts used:
+- OOP.
+- Lists and dictionaries.
+- File handling.
+- JSON.
+- Functions.
+- Testing.
+
+## Project 3: API-Based Weather Application
+
+Features:
+
+- Accept a city name.
+- Request weather information
